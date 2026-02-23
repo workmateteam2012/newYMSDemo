@@ -1,10 +1,10 @@
-# Active Context: Next.js Starter Template
+# Active Context: Timber Yard Management System
 
 ## Current State
 
-**Template Status**: ✅ Ready for development
+**Application Status**: ✅ GPS-Based Timber Yard Management System - Fully Implemented
 
-The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. It's ready for AI-assisted expansion to build any type of application.
+A full-featured timber yard operations dashboard built on GPS coordinates using Leaflet.js for map rendering. The yard is located in Rotorua, New Zealand.
 
 ## Recently Completed
 
@@ -14,23 +14,32 @@ The template is a clean Next.js 16 starter with TypeScript and Tailwind CSS 4. I
 - [x] ESLint configuration
 - [x] Memory bank documentation
 - [x] Recipe system for common features
+- [x] GPS-based yard boundary polygon (13 vertices)
+- [x] Locked zones: Stem Zone + Production House (no paths through)
+- [x] 12 operational zones: 4 log zones, 2 sorting, 2 buffer, 3 truck bays, 2 overflow
+- [x] 16 one-way loader paths routing around zones
+- [x] 5 animated loaders with real-time GPS position tracking
+- [x] Live inventory simulation with capacity color coding
+- [x] Satellite tile layer (Esri World Imagery)
+- [x] Interactive zone detail panel with manual stock adjustment
+- [x] Critical zone alerts bar
+- [x] Path/loader visibility toggles
 
 ## Current Structure
 
 | File/Directory | Purpose | Status |
 |----------------|---------|--------|
-| `src/app/page.tsx` | Home page | ✅ Ready |
-| `src/app/layout.tsx` | Root layout | ✅ Ready |
-| `src/app/globals.css` | Global styles | ✅ Ready |
+| `src/app/page.tsx` | Home page (dynamic import of map) | ✅ Ready |
+| `src/app/layout.tsx` | Root layout + Leaflet CSS | ✅ Ready |
+| `src/app/globals.css` | Global styles + Leaflet overrides | ✅ Ready |
+| `src/components/TimberYardMap.tsx` | Main map component | ✅ Ready |
+| `src/lib/yardData.ts` | GPS data, zones, paths, loaders | ✅ Ready |
 | `.kilocode/` | AI context & recipes | ✅ Ready |
 
-## Current Focus
+## Key Dependencies Added
 
-The template is ready. Next steps depend on user requirements:
-
-1. What type of application to build
-2. What features are needed
-3. Design/branding preferences
+- `leaflet@1.9.4` - GPS map rendering
+- `@types/leaflet@1.9.21` - TypeScript types
 
 ## Quick Start Guide
 
