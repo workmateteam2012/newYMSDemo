@@ -24,6 +24,9 @@ A full-featured timber yard operations dashboard built on GPS coordinates using 
 - [x] Interactive zone detail panel with manual stock adjustment
 - [x] Critical zone alerts bar
 - [x] Path/loader visibility toggles
+- [x] **FIX: Relocated all 12 operational zones inside yard boundary** (south area, lat -38.4115 to -38.4137)
+- [x] **FIX: Redesigned 16 one-way paths** to route between zone edges through corridors, not through zones or locked areas
+- [x] **FIX: Updated loader starting positions** to be on valid paths
 
 ## Current Structure
 
