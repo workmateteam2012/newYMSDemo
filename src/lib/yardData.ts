@@ -111,11 +111,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Stem Zone',
     type: 'stem',
     polygon: STEM_ZONE_POLYGON,
-    maxCapacity: 0,
-    currentStock: 0,
+    maxCapacity: 50,
+    currentStock: 35,
     color: '#6b7280',
     locked: true,
-    description: 'Restricted - No access',
+    description: 'Stems for processing',
   },
   {
     id: 'production-house',
@@ -889,5 +889,5 @@ export const ZONE_TYPE_INFO: Record<string, { label: string; icon: string }> = {
   truck: { label: 'Truck Bay', icon: '🚛' },
   overflow: { label: 'Overflow', icon: '⚠️' },
   production: { label: 'Production', icon: '🏭' },
-  stem: { label: 'Stem Zone', icon: '🚫' },
+  stem: { label: 'Stem Zone', icon: '🪵' },
 };
