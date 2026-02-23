@@ -88,6 +88,18 @@ export const PRODUCTION_HOUSE_POLYGON: LatLng[] = [
 // ============================================================
 // OPERATIONAL ZONES (Inside yard, outside locked areas)
 // ============================================================
+//
+// Available space analysis:
+//   - South area: lat -38.4113 to -38.4137, lng 176.5445 to 176.5506
+//     (large open area below both locked zones)
+//   - East of stem zone: lat -38.4087 to -38.4108, lng 176.5484 to ~176.5487
+//     (narrow strip, yard boundary limits eastward extent)
+//   - North-east: lat -38.4084 to -38.4087, lng 176.5476 to 176.5483
+//     (small triangle above stem zone)
+//
+// All 12 operational zones are placed in the south area for clarity.
+// Zone size: ~0.0003 lat x 0.0012 lng (~33m x 95m)
+// ============================================================
 
 export const INITIAL_ZONES: Zone[] = [
   // ---- LOCKED ZONES (display only) ----
@@ -114,17 +126,18 @@ export const INITIAL_ZONES: Zone[] = [
     description: 'Log processing facility',
   },
 
-  // ---- LOG ZONES (NE quadrant - east of stem zone) ----
+  // ---- LOG ZONES (Row 1 - top of south area) ----
+  // Row 1: lat -38.4115 to -38.4119
   {
     id: 'log-zone-pine-1',
     name: 'Pine Log Zone A',
     type: 'log',
     polygon: [
-      [-38.40870, 176.54870],
-      [-38.40870, 176.54960],
-      [-38.40920, 176.54960],
-      [-38.40920, 176.54870],
-      [-38.40870, 176.54870],
+      [-38.41150, 176.54620],
+      [-38.41150, 176.54680],
+      [-38.41190, 176.54680],
+      [-38.41190, 176.54620],
+      [-38.41150, 176.54620],
     ],
     logType: 'Pine',
     maxCapacity: 200,
@@ -138,11 +151,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Pine Log Zone B',
     type: 'log',
     polygon: [
-      [-38.40930, 176.54870],
-      [-38.40930, 176.54960],
-      [-38.40980, 176.54960],
-      [-38.40980, 176.54870],
-      [-38.40930, 176.54870],
+      [-38.41150, 176.54700],
+      [-38.41150, 176.54760],
+      [-38.41190, 176.54760],
+      [-38.41190, 176.54700],
+      [-38.41150, 176.54700],
     ],
     logType: 'Pine',
     maxCapacity: 200,
@@ -156,11 +169,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Eucalyptus Zone',
     type: 'log',
     polygon: [
-      [-38.40870, 176.54970],
-      [-38.40870, 176.55050],
-      [-38.40930, 176.55050],
-      [-38.40930, 176.54970],
-      [-38.40870, 176.54970],
+      [-38.41150, 176.54780],
+      [-38.41150, 176.54840],
+      [-38.41190, 176.54840],
+      [-38.41190, 176.54780],
+      [-38.41150, 176.54780],
     ],
     logType: 'Eucalyptus',
     maxCapacity: 150,
@@ -174,11 +187,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Mixed Hardwood Zone',
     type: 'log',
     polygon: [
-      [-38.40990, 176.54870],
-      [-38.40990, 176.54960],
-      [-38.41040, 176.54960],
-      [-38.41040, 176.54870],
-      [-38.40990, 176.54870],
+      [-38.41150, 176.54860],
+      [-38.41150, 176.54920],
+      [-38.41190, 176.54920],
+      [-38.41190, 176.54860],
+      [-38.41150, 176.54860],
     ],
     logType: 'Mixed Hardwood',
     maxCapacity: 180,
@@ -188,17 +201,18 @@ export const INITIAL_ZONES: Zone[] = [
     description: 'Mixed hardwood storage',
   },
 
-  // ---- SORTING ZONES ----
+  // ---- SORTING ZONES (Row 2) ----
+  // Row 2: lat -38.4121 to -38.4125
   {
     id: 'sorting-zone-1',
     name: 'Sorting Zone Alpha',
     type: 'sorting',
     polygon: [
-      [-38.41050, 176.54870],
-      [-38.41050, 176.54940],
-      [-38.41100, 176.54940],
-      [-38.41100, 176.54870],
-      [-38.41050, 176.54870],
+      [-38.41210, 176.54620],
+      [-38.41210, 176.54720],
+      [-38.41250, 176.54720],
+      [-38.41250, 176.54620],
+      [-38.41210, 176.54620],
     ],
     maxCapacity: 100,
     currentStock: 45,
@@ -211,11 +225,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Sorting Zone Beta',
     type: 'sorting',
     polygon: [
-      [-38.41050, 176.54950],
-      [-38.41050, 176.55020],
-      [-38.41100, 176.55020],
-      [-38.41100, 176.54950],
-      [-38.41050, 176.54950],
+      [-38.41210, 176.54780],
+      [-38.41210, 176.54880],
+      [-38.41250, 176.54880],
+      [-38.41250, 176.54780],
+      [-38.41210, 176.54780],
     ],
     maxCapacity: 100,
     currentStock: 80,
@@ -224,17 +238,18 @@ export const INITIAL_ZONES: Zone[] = [
     description: 'Secondary log sorting area',
   },
 
-  // ---- BUFFER ZONES ----
+  // ---- BUFFER ZONES (Row 3) ----
+  // Row 3: lat -38.4127 to -38.4131
   {
     id: 'buffer-zone-1',
     name: 'Buffer Zone North',
     type: 'buffer',
     polygon: [
-      [-38.41110, 176.54870],
-      [-38.41110, 176.54960],
-      [-38.41160, 176.54960],
-      [-38.41160, 176.54870],
-      [-38.41110, 176.54870],
+      [-38.41270, 176.54620],
+      [-38.41270, 176.54720],
+      [-38.41310, 176.54720],
+      [-38.41310, 176.54620],
+      [-38.41270, 176.54620],
     ],
     maxCapacity: 80,
     currentStock: 30,
@@ -247,11 +262,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Buffer Zone East',
     type: 'buffer',
     polygon: [
-      [-38.41110, 176.54970],
-      [-38.41110, 176.55050],
-      [-38.41160, 176.55050],
-      [-38.41160, 176.54970],
-      [-38.41110, 176.54970],
+      [-38.41270, 176.54780],
+      [-38.41270, 176.54880],
+      [-38.41310, 176.54880],
+      [-38.41310, 176.54780],
+      [-38.41270, 176.54780],
     ],
     maxCapacity: 80,
     currentStock: 72,
@@ -260,17 +275,18 @@ export const INITIAL_ZONES: Zone[] = [
     description: 'East buffer storage',
   },
 
-  // ---- TRUCK PARKING & LOADING ZONES (south-east area) ----
+  // ---- TRUCK PARKING & LOADING ZONES (Row 4 - bottom of south area) ----
+  // Row 4: lat -38.4133 to -38.4137
   {
     id: 'truck-zone-1',
     name: 'Truck Bay 1',
     type: 'truck',
     polygon: [
-      [-38.41170, 176.54870],
-      [-38.41170, 176.54960],
-      [-38.41240, 176.54960],
-      [-38.41240, 176.54870],
-      [-38.41170, 176.54870],
+      [-38.41330, 176.54620],
+      [-38.41330, 176.54700],
+      [-38.41365, 176.54700],
+      [-38.41365, 176.54620],
+      [-38.41330, 176.54620],
     ],
     maxCapacity: 60,
     currentStock: 20,
@@ -283,11 +299,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Truck Bay 2',
     type: 'truck',
     polygon: [
-      [-38.41170, 176.54970],
-      [-38.41170, 176.55050],
-      [-38.41240, 176.55050],
-      [-38.41240, 176.54970],
-      [-38.41170, 176.54970],
+      [-38.41330, 176.54720],
+      [-38.41330, 176.54800],
+      [-38.41365, 176.54800],
+      [-38.41365, 176.54720],
+      [-38.41330, 176.54720],
     ],
     maxCapacity: 60,
     currentStock: 55,
@@ -300,11 +316,11 @@ export const INITIAL_ZONES: Zone[] = [
     name: 'Truck Bay 3',
     type: 'truck',
     polygon: [
-      [-38.41250, 176.54870],
-      [-38.41250, 176.55050],
-      [-38.41340, 176.55050],
-      [-38.41340, 176.54870],
-      [-38.41250, 176.54870],
+      [-38.41330, 176.54820],
+      [-38.41330, 176.54920],
+      [-38.41365, 176.54920],
+      [-38.41365, 176.54820],
+      [-38.41330, 176.54820],
     ],
     maxCapacity: 80,
     currentStock: 10,
@@ -313,17 +329,17 @@ export const INITIAL_ZONES: Zone[] = [
     description: 'Large truck loading bay',
   },
 
-  // ---- OVERFLOW ZONES (north-west corner, outside stem zone) ----
+  // ---- OVERFLOW ZONES (east side of south area) ----
   {
     id: 'overflow-zone-1',
-    name: 'Overflow Zone West',
+    name: 'Overflow Zone East',
     type: 'overflow',
     polygon: [
-      [-38.40860, 176.54620],
-      [-38.40860, 176.54700],
-      [-38.40910, 176.54700],
-      [-38.40910, 176.54620],
-      [-38.40860, 176.54620],
+      [-38.41210, 176.54920],
+      [-38.41210, 176.55000],
+      [-38.41250, 176.55000],
+      [-38.41250, 176.54920],
+      [-38.41210, 176.54920],
     ],
     maxCapacity: 120,
     currentStock: 95,
@@ -333,31 +349,45 @@ export const INITIAL_ZONES: Zone[] = [
   },
   {
     id: 'overflow-zone-2',
-    name: 'Overflow Zone South',
+    name: 'Overflow Zone South-East',
     type: 'overflow',
     polygon: [
-      [-38.41170, 176.54620],
-      [-38.41170, 176.54700],
-      [-38.41240, 176.54700],
-      [-38.41240, 176.54620],
-      [-38.41170, 176.54620],
+      [-38.41270, 176.54920],
+      [-38.41270, 176.55000],
+      [-38.41310, 176.55000],
+      [-38.41310, 176.54920],
+      [-38.41270, 176.54920],
     ],
     maxCapacity: 100,
     currentStock: 40,
     color: '#b91c1c',
     locked: false,
-    description: 'South overflow storage',
+    description: 'South-east overflow storage',
   },
 ];
 
 // ============================================================
-// PATHS (One-way, GPS-based, no crossing zones)
-// All paths route AROUND zones, not through them
+// PATHS (One-way, GPS-based, no crossing zones or locked areas)
+// All paths route BETWEEN zones using corridors/gaps
+//
+// Layout corridors (gaps between zone rows):
+//   - Horizontal corridor at lat -38.4119 to -38.4121 (between row 1 & 2)
+//   - Horizontal corridor at lat -38.4125 to -38.4127 (between row 2 & 3)
+//   - Horizontal corridor at lat -38.4131 to -38.4133 (between row 3 & 4)
+//   - Vertical corridor at lng 176.5468 to 176.5470 (between left zone pairs)
+//   - Vertical corridor at lng 176.5474 to 176.5478 (central gap)
+//   - Vertical corridor at lng 176.5488 to 176.5492 (between right zone pairs)
+//   - North entry corridor at lat -38.4110 to -38.4115 (from locked areas)
 // ============================================================
 
 export const INITIAL_PATHS: Path[] = [
-  // Production House Exit → Log Zone Pine A
-  // Routes along the EAST edge of production house, then north
+  // ================================================================
+  // PRODUCTION HOUSE → LOG ZONES
+  // Production house south edge is at lat -38.4131, lng 176.5453-176.5460
+  // Route south from production house exit, then east to log zones
+  // ================================================================
+
+  // Production House → Pine A
   {
     id: 'path-prod-to-pine-a',
     name: 'Production → Pine A',
@@ -366,18 +396,16 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#f59e0b',
     points: [
-      [-38.41305, 176.54598], // Production house east exit
-      [-38.41305, 176.54650], // Move east along south edge
-      [-38.41200, 176.54650], // North along east corridor
-      [-38.41100, 176.54650], // Continue north
-      [-38.41000, 176.54650], // Continue north
-      [-38.40920, 176.54650], // Near pine zone level
-      [-38.40920, 176.54870], // Turn east to Pine A
-      [-38.40895, 176.54870], // Enter Pine A zone edge
+      [-38.41305, 176.54598], // Production house south-east corner exit
+      [-38.41310, 176.54610], // Step south-east
+      [-38.41310, 176.54620], // Into south corridor
+      [-38.41200, 176.54620], // North along west edge corridor
+      [-38.41190, 176.54620], // Arrive at Pine A south-west corner
+      [-38.41170, 176.54650], // Pine A south edge midpoint
     ],
   },
 
-  // Production House Exit → Pine Zone B
+  // Production House → Pine B
   {
     id: 'path-prod-to-pine-b',
     name: 'Production → Pine B',
@@ -386,12 +414,12 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#f59e0b',
     points: [
-      [-38.41305, 176.54598],
-      [-38.41305, 176.54660],
-      [-38.41150, 176.54660],
-      [-38.40980, 176.54660],
-      [-38.40955, 176.54660],
-      [-38.40955, 176.54870],
+      [-38.41305, 176.54598], // Production house south-east corner exit
+      [-38.41310, 176.54610],
+      [-38.41310, 176.54690], // East along corridor
+      [-38.41200, 176.54690], // North
+      [-38.41190, 176.54700], // Arrive at Pine B south-west corner
+      [-38.41170, 176.54730], // Pine B south edge midpoint
     ],
   },
 
@@ -404,11 +432,12 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#f59e0b',
     points: [
-      [-38.41305, 176.54598],
-      [-38.41305, 176.54670],
-      [-38.41100, 176.54670],
-      [-38.40900, 176.54670],
-      [-38.40900, 176.54970],
+      [-38.41305, 176.54598], // Production house south-east corner exit
+      [-38.41310, 176.54610],
+      [-38.41310, 176.54770], // East along corridor
+      [-38.41200, 176.54770], // North
+      [-38.41190, 176.54780], // Arrive at Eucalyptus south-west corner
+      [-38.41170, 176.54810], // Eucalyptus south edge midpoint
     ],
   },
 
@@ -421,15 +450,21 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#f59e0b',
     points: [
-      [-38.41305, 176.54598],
-      [-38.41305, 176.54680],
-      [-38.41050, 176.54680],
-      [-38.41015, 176.54680],
-      [-38.41015, 176.54870],
+      [-38.41305, 176.54598], // Production house south-east corner exit
+      [-38.41310, 176.54610],
+      [-38.41310, 176.54850], // East along corridor
+      [-38.41200, 176.54850], // North
+      [-38.41190, 176.54860], // Arrive at Hardwood south-west corner
+      [-38.41170, 176.54890], // Hardwood south edge midpoint
     ],
   },
 
-  // Pine A → Sorting Zone Alpha
+  // ================================================================
+  // LOG ZONES → SORTING ZONES
+  // Route south from log zone row through horizontal corridor to sorting row
+  // ================================================================
+
+  // Pine A → Sorting Alpha
   {
     id: 'path-pine-a-to-sorting-1',
     name: 'Pine A → Sorting Alpha',
@@ -438,17 +473,14 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#06b6d4',
     points: [
-      [-38.40920, 176.54960], // Exit Pine A east
-      [-38.40920, 176.54980], // Move east
-      [-38.40960, 176.54980], // South corridor
-      [-38.41000, 176.54980], // Continue south
-      [-38.41050, 176.54980], // Near sorting level
-      [-38.41050, 176.54940], // Enter Sorting Alpha
-      [-38.41075, 176.54940],
+      [-38.41190, 176.54650], // Pine A south edge
+      [-38.41200, 176.54650], // Step into corridor
+      [-38.41200, 176.54670], // East in corridor
+      [-38.41210, 176.54670], // Sorting Alpha north edge
     ],
   },
 
-  // Pine B → Sorting Zone Alpha
+  // Pine B → Sorting Alpha
   {
     id: 'path-pine-b-to-sorting-1',
     name: 'Pine B → Sorting Alpha',
@@ -457,16 +489,14 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#06b6d4',
     points: [
-      [-38.40980, 176.54960], // Exit Pine B east
-      [-38.40980, 176.54985],
-      [-38.41020, 176.54985],
-      [-38.41050, 176.54985],
-      [-38.41050, 176.54940],
-      [-38.41075, 176.54940],
+      [-38.41190, 176.54730], // Pine B south edge
+      [-38.41200, 176.54730], // Step into corridor
+      [-38.41200, 176.54700], // West in corridor
+      [-38.41210, 176.54700], // Sorting Alpha north-east edge
     ],
   },
 
-  // Eucalyptus → Sorting Zone Beta
+  // Eucalyptus → Sorting Beta
   {
     id: 'path-eucalyptus-to-sorting-2',
     name: 'Eucalyptus → Sorting Beta',
@@ -475,16 +505,14 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#06b6d4',
     points: [
-      [-38.40930, 176.55050], // Exit Eucalyptus south
-      [-38.40960, 176.55050],
-      [-38.41000, 176.55050],
-      [-38.41050, 176.55050],
-      [-38.41050, 176.55020],
-      [-38.41075, 176.55020],
+      [-38.41190, 176.54810], // Eucalyptus south edge
+      [-38.41200, 176.54810], // Step into corridor
+      [-38.41200, 176.54830], // East in corridor
+      [-38.41210, 176.54830], // Sorting Beta north edge
     ],
   },
 
-  // Hardwood → Sorting Zone Beta
+  // Hardwood → Sorting Beta
   {
     id: 'path-hardwood-to-sorting-2',
     name: 'Hardwood → Sorting Beta',
@@ -493,13 +521,17 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#06b6d4',
     points: [
-      [-38.41040, 176.54960], // Exit Hardwood east
-      [-38.41040, 176.54990],
-      [-38.41050, 176.54990],
-      [-38.41050, 176.55020],
-      [-38.41075, 176.55020],
+      [-38.41190, 176.54890], // Hardwood south edge
+      [-38.41200, 176.54890], // Step into corridor
+      [-38.41200, 176.54860], // West in corridor
+      [-38.41210, 176.54860], // Sorting Beta north-east edge
     ],
   },
+
+  // ================================================================
+  // SORTING ZONES → BUFFER ZONES
+  // Route south through corridor between row 2 and row 3
+  // ================================================================
 
   // Sorting Alpha → Buffer North
   {
@@ -510,10 +542,9 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#8b5cf6',
     points: [
-      [-38.41100, 176.54940], // Exit Sorting Alpha south
-      [-38.41110, 176.54940],
-      [-38.41110, 176.54960],
-      [-38.41135, 176.54960],
+      [-38.41250, 176.54670], // Sorting Alpha south edge
+      [-38.41260, 176.54670], // Step into corridor
+      [-38.41270, 176.54670], // Buffer North north edge
     ],
   },
 
@@ -526,12 +557,16 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#8b5cf6',
     points: [
-      [-38.41100, 176.55020], // Exit Sorting Beta south
-      [-38.41110, 176.55020],
-      [-38.41110, 176.55050],
-      [-38.41135, 176.55050],
+      [-38.41250, 176.54830], // Sorting Beta south edge
+      [-38.41260, 176.54830], // Step into corridor
+      [-38.41270, 176.54830], // Buffer East north edge
     ],
   },
+
+  // ================================================================
+  // BUFFER ZONES → TRUCK BAYS
+  // Route south through corridor between row 3 and row 4
+  // ================================================================
 
   // Buffer North → Truck Bay 1
   {
@@ -542,9 +577,9 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#f97316',
     points: [
-      [-38.41160, 176.54960], // Exit Buffer North south
-      [-38.41170, 176.54960],
-      [-38.41205, 176.54960],
+      [-38.41310, 176.54660], // Buffer North south edge
+      [-38.41320, 176.54660], // Step into corridor
+      [-38.41330, 176.54660], // Truck Bay 1 north edge
     ],
   },
 
@@ -557,83 +592,66 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#f97316',
     points: [
-      [-38.41160, 176.55050], // Exit Buffer East south
-      [-38.41170, 176.55050],
-      [-38.41205, 176.55050],
+      [-38.41310, 176.54760], // Buffer East south edge
+      [-38.41320, 176.54760], // Step into corridor
+      [-38.41330, 176.54760], // Truck Bay 2 north edge
     ],
   },
 
-  // Truck Bay 1 → Truck Bay 3 (consolidation)
+  // Buffer East → Truck Bay 3
   {
-    id: 'path-truck-1-to-truck-3',
-    name: 'Truck Bay 1 → Bay 3',
-    fromZoneId: 'truck-zone-1',
+    id: 'path-buffer-2-to-truck-3',
+    name: 'Buffer East → Truck Bay 3',
+    fromZoneId: 'buffer-zone-2',
     toZoneId: 'truck-zone-3',
     direction: 'one-way',
     color: '#ea580c',
     points: [
-      [-38.41240, 176.54960],
-      [-38.41250, 176.54960],
-      [-38.41295, 176.54960],
+      [-38.41310, 176.54850], // Buffer East south-east edge
+      [-38.41320, 176.54850], // Step into corridor
+      [-38.41320, 176.54870], // East in corridor
+      [-38.41330, 176.54870], // Truck Bay 3 north edge
     ],
   },
 
-  // Truck Bay 2 → Truck Bay 3
-  {
-    id: 'path-truck-2-to-truck-3',
-    name: 'Truck Bay 2 → Bay 3',
-    fromZoneId: 'truck-zone-2',
-    toZoneId: 'truck-zone-3',
-    direction: 'one-way',
-    color: '#ea580c',
-    points: [
-      [-38.41240, 176.55050],
-      [-38.41250, 176.55050],
-      [-38.41295, 176.55050],
-    ],
-  },
+  // ================================================================
+  // OVERFLOW ZONE CONNECTIONS
+  // ================================================================
 
-  // Overflow Zone West → Pine A (emergency feed)
+  // Overflow East → Sorting Beta (emergency feed)
   {
-    id: 'path-overflow-w-to-pine-a',
-    name: 'Overflow West → Pine A',
+    id: 'path-overflow-e-to-sorting-2',
+    name: 'Overflow East → Sorting Beta',
     fromZoneId: 'overflow-zone-1',
-    toZoneId: 'log-zone-pine-1',
+    toZoneId: 'sorting-zone-2',
     direction: 'one-way',
     color: '#ef4444',
     points: [
-      [-38.40910, 176.54700], // Exit Overflow West east
-      [-38.40910, 176.54760],
-      [-38.40910, 176.54820],
-      [-38.40895, 176.54820],
-      [-38.40895, 176.54870],
+      [-38.41230, 176.54920], // Overflow East west edge
+      [-38.41230, 176.54900], // West in corridor
+      [-38.41230, 176.54880], // Sorting Beta east edge
     ],
   },
 
-  // Overflow Zone South → Sorting Alpha (emergency feed)
+  // Overflow South-East → Buffer East (emergency feed)
   {
-    id: 'path-overflow-s-to-sorting-1',
-    name: 'Overflow South → Sorting Alpha',
+    id: 'path-overflow-se-to-buffer-2',
+    name: 'Overflow SE → Buffer East',
     fromZoneId: 'overflow-zone-2',
-    toZoneId: 'sorting-zone-1',
+    toZoneId: 'buffer-zone-2',
     direction: 'one-way',
     color: '#ef4444',
     points: [
-      [-38.41240, 176.54700], // Exit Overflow South east
-      [-38.41240, 176.54760],
-      [-38.41240, 176.54820],
-      [-38.41240, 176.54870],
-      [-38.41200, 176.54870],
-      [-38.41160, 176.54870],
-      [-38.41100, 176.54870],
-      [-38.41075, 176.54870],
-      [-38.41075, 176.54940],
+      [-38.41290, 176.54920], // Overflow SE west edge
+      [-38.41290, 176.54900], // West in corridor
+      [-38.41290, 176.54880], // Buffer East east edge
     ],
   },
 ];
 
 // ============================================================
 // INITIAL LOADERS
+// Positioned on valid paths (not inside zones or locked areas)
 // ============================================================
 
 export const INITIAL_LOADERS: Loader[] = [
@@ -665,7 +683,7 @@ export const INITIAL_LOADERS: Loader[] = [
     id: 'loader-3',
     name: 'Loader Gamma',
     pathId: 'path-sorting-1-to-buffer-1',
-    progress: 0.6,
+    progress: 0.5,
     speed: 0.009,
     status: 'moving',
     carryingLogs: 6,
