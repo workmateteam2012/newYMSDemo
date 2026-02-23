@@ -654,44 +654,79 @@ export const INITIAL_PATHS: Path[] = [
   // ================================================================
   // WAGNER STEMZONE PATHS (Only Wagner can use these)
   // Paths inside stemzone for transferring stems to production house
+  // 6 Storage locations in stem zone (2 rows x 3 columns):
+  //   Row 1 (south): Storage 1-3 at lat ~-38.4088
+  //   Row 2 (north): Storage 4-6 at lat ~-38.4103
+  // Wagner visits all 6 locations in a continuous loop
   // ================================================================
 
-  // Stem Zone interior path - entry from north-west
+  // Path 1: Entry into stem zone → visit Storage 4 (north-west), then Storage 1 (south-west)
   {
     id: 'path-wagner-stem-entry',
-    name: 'Wagner Entry → Stem Zone',
+    name: 'Entry → Storage 4 → Storage 1',
     fromZoneId: 'stem-zone',
     toZoneId: 'stem-zone',
     direction: 'one-way',
     color: '#dc2626',
     points: [
-      [-38.40865, 176.54580], // Entry point from yard (north-west of stemzone)
-      [-38.40870, 176.54610], // Move into stemzone
-      [-38.40890, 176.54650], // Continue south
-      [-38.40920, 176.54680], // Middle of stemzone
-      [-38.40950, 176.54720], // Move south-east
+      [-38.41080, 176.54580], // Entry point from yard (north of stemzone)
+      [-38.41050, 176.54600], // Move into stemzone north-west
+      [-38.41030, 176.54630], // Storage 4 area (north-west)
+      [-38.40960, 176.54630], // Move south
+      [-38.40880, 176.54630], // Storage 1 area (south-west)
     ],
     allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
   },
 
-  // Stem Zone interior path - traverse east
+  // Path 2: Traverse from Storage 1 → Storage 2 → Storage 3 (bottom row)
   {
-    id: 'path-wagner-stem-traverse',
-    name: 'Stem Zone Traverse',
+    id: 'path-wagner-stem-row1',
+    name: 'Storage 1 → Storage 2 → Storage 3',
     fromZoneId: 'stem-zone',
     toZoneId: 'stem-zone',
     direction: 'one-way',
     color: '#dc2626',
     points: [
-      [-38.40950, 176.54720], // From entry path
-      [-38.40980, 176.54750], // Move east
-      [-38.41000, 176.54780], // Continue east
-      [-38.41030, 176.54800], // East side of stemzone
+      [-38.40880, 176.54630], // From Storage 1 (south-west)
+      [-38.40880, 176.54710], // Storage 2 (south-center)
+      [-38.40880, 176.54790], // Storage 3 (south-east)
     ],
     allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
   },
 
-  // Stem Zone to Production House - exit path
+  // Path 3: Traverse from Storage 3 → Storage 6 (go up right side)
+  {
+    id: 'path-wagner-stem-to-north',
+    name: 'Storage 3 → Storage 6',
+    fromZoneId: 'stem-zone',
+    toZoneId: 'stem-zone',
+    direction: 'one-way',
+    color: '#dc2626',
+    points: [
+      [-38.40880, 176.54790], // From Storage 3 (south-east)
+      [-38.40950, 176.54790], // Move north
+      [-38.41030, 176.54790], // Storage 6 (north-east)
+    ],
+    allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
+  },
+
+  // Path 4: Traverse from Storage 6 → Storage 5 → Storage 4 (top row, right to left)
+  {
+    id: 'path-wagner-stem-row2',
+    name: 'Storage 6 → Storage 5 → Storage 4',
+    fromZoneId: 'stem-zone',
+    toZoneId: 'stem-zone',
+    direction: 'one-way',
+    color: '#dc2626',
+    points: [
+      [-38.41030, 176.54790], // From Storage 6 (north-east)
+      [-38.41030, 176.54710], // Storage 5 (north-center)
+      [-38.41030, 176.54630], // Storage 4 (north-west) - completes loop
+    ],
+    allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
+  },
+
+  // Path 5: Exit stem zone to Production House (from Storage 6 area)
   {
     id: 'path-wagner-stem-to-production',
     name: 'Stem Zone → Production House',
@@ -700,18 +735,17 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#dc2626',
     points: [
-      [-38.41030, 176.54800], // East side of stemzone
-      [-38.41050, 176.54780], // Move towards production
-      [-38.41080, 176.54750], // South of stemzone
-      [-38.41100, 176.54720], // Move south-west
-      [-38.41120, 176.54680], // Approaching production house
-      [-38.41050, 176.54620], // Production house north edge
-      [-38.40980, 176.54600], // Production house north-west
+      [-38.41030, 176.54790], // From Storage 6 (north-east)
+      [-38.41050, 176.54770], // Move towards production
+      [-38.41070, 176.54740], // South-east of stemzone
+      [-38.41080, 176.54700], // Approach production house
+      [-38.41050, 176.54650], // Production house south edge
+      [-38.40980, 176.54600], // Production house south-west corner
     ],
     allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
   },
 
-  // Production House to Stem Zone - return path (empty)
+  // Path 6: Return from Production House to Stem Zone entry
   {
     id: 'path-wagner-production-to-stem',
     name: 'Production House → Stem Zone',
@@ -720,13 +754,10 @@ export const INITIAL_PATHS: Path[] = [
     direction: 'one-way',
     color: '#dc2626',
     points: [
-      [-38.40980, 176.54600], // Production house north-west
-      [-38.40950, 176.54650], // Exit production
-      [-38.40930, 176.54680], // Move north
-      [-38.40910, 176.54710], // Back into stemzone
-      [-38.40890, 176.54680], // Continue west
-      [-38.40870, 176.54630], // West in stemzone
-      [-38.40865, 176.54580], // Return to entry point
+      [-38.40980, 176.54600], // Production house south-west corner
+      [-38.41020, 176.54580], // Move north-west
+      [-38.41050, 176.54580], // Back towards stemzone
+      [-38.41080, 176.54580], // Return to entry point
     ],
     allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
   },
@@ -753,7 +784,9 @@ export const INITIAL_LOADERS: Loader[] = [
     canAccessStemZone: true,
     pathSequence: [
       'path-wagner-stem-entry',
-      'path-wagner-stem-traverse',
+      'path-wagner-stem-row1',
+      'path-wagner-stem-to-north',
+      'path-wagner-stem-row2',
       'path-wagner-stem-to-production',
       'path-wagner-production-to-stem',
     ],
