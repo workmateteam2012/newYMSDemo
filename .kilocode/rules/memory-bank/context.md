@@ -27,6 +27,13 @@ A full-featured timber yard operations dashboard built on GPS coordinates using 
 - [x] **FIX: Relocated all 12 operational zones inside yard boundary** (south area, lat -38.4115 to -38.4137)
 - [x] **FIX: Redesigned 16 one-way paths** to route between zone edges through corridors, not through zones or locked areas
 - [x] **FIX: Updated loader starting positions** to be on valid paths
+- [x] **ADDED: Wagner Big Red loader** - transfers stems from Stem Zone to Production House
+  - Added 4 stemzone-specific paths (entry, traverse, to production, return)
+  - Only Wagner can use stemzone paths via `allowedLoaderIds` restriction
+  - Larger marker size, higher z-index for visibility
+  - Path sequence cycling for continuous stem transfer operations
+- [x] **UPDATED: Locked zones now display as normal** - no special styling (dashed borders, gray fill)
+- [x] Removed "Locked Zone" from legend
 
 ## Current Structure
 
@@ -44,56 +51,12 @@ A full-featured timber yard operations dashboard built on GPS coordinates using 
 - `leaflet@1.9.4` - GPS map rendering
 - `@types/leaflet@1.9.21` - TypeScript types
 
-## Quick Start Guide
+## Wagner Loader Details
 
-### To add a new page:
+The Wagner Big Red loader operates on a 4-path sequence:
+1. `path-wagner-stem-entry` - Enter stem zone from north-west
+2. `path-wagner-stem-traverse` - Traverse through stem zone
+3. `path-wagner-stem-to-production` - Exit to production house (loads)
+4. `path-wagner-production-to-stem` - Return to stem zone (unloads)
 
-Create a file at `src/app/[route]/page.tsx`:
-```tsx
-export default function NewPage() {
-  return <div>New page content</div>;
-}
-```
-
-### To add components:
-
-Create `src/components/` directory and add components:
-```tsx
-// src/components/ui/Button.tsx
-export function Button({ children }: { children: React.ReactNode }) {
-  return <button className="px-4 py-2 bg-blue-600 text-white rounded">{children}</button>;
-}
-```
-
-### To add a database:
-
-Follow `.kilocode/recipes/add-database.md`
-
-### To add API routes:
-
-Create `src/app/api/[route]/route.ts`:
-```tsx
-import { NextResponse } from "next/server";
-
-export async function GET() {
-  return NextResponse.json({ message: "Hello" });
-}
-```
-
-## Available Recipes
-
-| Recipe | File | Use Case |
-|--------|------|----------|
-| Add Database | `.kilocode/recipes/add-database.md` | Data persistence with Drizzle + SQLite |
-
-## Pending Improvements
-
-- [ ] Add more recipes (auth, email, etc.)
-- [ ] Add example components
-- [ ] Add testing setup recipe
-
-## Session History
-
-| Date | Changes |
-|------|---------|
-| Initial | Template created with base setup |
+Path access is restricted via `allowedLoaderIds: ['wagner-1']` - regular loaders cannot use these paths.

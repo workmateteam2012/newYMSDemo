@@ -67,16 +67,14 @@ export default function TimberYardMap() {
       zoneLayersRef.current.clear();
 
       zoneList.forEach((zone) => {
-        const fillColor = zone.locked
-          ? zone.color
-          : getCapacityColor(zone.currentStock, zone.maxCapacity);
+        // Display all zones as normal - locked property controls path access, not display
+        const fillColor = getCapacityColor(zone.currentStock, zone.maxCapacity);
 
         const poly = L.polygon(zone.polygon, {
-          color: zone.locked ? '#6b7280' : '#ffffff',
-          weight: zone.locked ? 2 : 1.5,
+          color: '#ffffff',
+          weight: 1.5,
           fillColor,
-          fillOpacity: zone.locked ? 0.55 : 0.65,
-          dashArray: zone.locked ? '6 3' : undefined,
+          fillOpacity: 0.65,
         }).addTo(map);
 
         // Zone label
@@ -85,7 +83,7 @@ export default function TimberYardMap() {
         const typeInfo = ZONE_TYPE_INFO[zone.type] || { icon: '📍', label: zone.type };
 
         const labelHtml = zone.locked
-          ? `<div class="zone-label locked-label">
+          ? `<div class="zone-label">
               <span class="zone-icon">${typeInfo.icon}</span>
               <span class="zone-name">${zone.name}</span>
             </div>`
@@ -177,17 +175,22 @@ export default function TimberYardMap() {
 
         const pos = interpolateAlongPath(path.points, loader.progress);
 
+        // Different icon for Wagner loader
+        const isWagner = loader.canAccessStemZone;
+        const loaderIcon = isWagner ? '🚜' : '🚜';
+        const loaderName = isWagner ? 'WAGNER' : '';
+
         const marker = L.marker(pos, {
           icon: L.divIcon({
             html: `<div class="loader-marker" style="background:${loader.color}">
-              <span class="loader-icon">🚜</span>
+              <span class="loader-icon">${loaderIcon}</span>
               <span class="loader-load">${loader.carryingLogs}/${loader.maxLoad}</span>
             </div>`,
             className: '',
-            iconSize: [44, 44],
-            iconAnchor: [22, 22],
+            iconSize: isWagner ? [52, 52] : [44, 44],
+            iconAnchor: isWagner ? [26, 26] : [22, 22],
           }),
-          zIndexOffset: 1000,
+          zIndexOffset: isWagner ? 1100 : 1000,
           opacity: showLoaders ? 1 : 0,
         }).addTo(map);
 
@@ -286,14 +289,41 @@ export default function TimberYardMap() {
           const path = paths.find((p) => p.id === loader.pathId);
           if (!path) return loader;
 
+          // Check if path has loader restrictions
+          if (path.allowedLoaderIds && !path.allowedLoaderIds.includes(loader.id)) {
+            // Loader not allowed on this path - try to find alternative or stay idle
+            return loader;
+          }
+
           let newProgress = loader.progress + loader.speed;
           let newStatus = loader.status;
           let newCarrying = loader.carryingLogs;
+          let newPathId = loader.pathId;
 
           if (newProgress >= 1) {
-            newProgress = 0;
-            newStatus = 'loading';
-            newCarrying = Math.floor(Math.random() * loader.maxLoad) + 1;
+            // Check if this loader has a path sequence (like Wagner)
+            if (loader.pathSequence && loader.pathSequence.length > 0) {
+              const currentIndex = loader.pathSequence.indexOf(loader.pathId);
+              const nextIndex = (currentIndex + 1) % loader.pathSequence.length;
+              newPathId = loader.pathSequence[nextIndex];
+              newProgress = 0;
+              
+              // Toggle carrying logs - load when in stemzone, unload in production
+              if (newPathId === 'path-wagner-stem-to-production') {
+                newCarrying = loader.maxLoad; // Loaded with stems
+                newStatus = 'moving';
+              } else if (newPathId === 'path-wagner-production-to-stem') {
+                newCarrying = 0; // Unloaded at production
+                newStatus = 'moving';
+              } else {
+                newStatus = 'moving';
+              }
+            } else {
+              // Regular loader - reset to start of same path
+              newProgress = 0;
+              newStatus = 'loading';
+              newCarrying = Math.floor(Math.random() * loader.maxLoad) + 1;
+            }
           }
 
           if (loader.status === 'loading' && newProgress > 0.05) {
@@ -302,10 +332,11 @@ export default function TimberYardMap() {
 
           return {
             ...loader,
+            pathId: newPathId,
             progress: newProgress,
             status: newStatus,
             carryingLogs: newCarrying,
-            position: interpolateAlongPath(path.points, newProgress),
+            position: interpolateAlongPath(paths.find(p => p.id === newPathId)?.points || path.points, newProgress),
           };
         });
       });
@@ -332,6 +363,7 @@ export default function TimberYardMap() {
 
       const pos = interpolateAlongPath(path.points, loader.progress);
       const existing = loaderMarkersRef.current.get(loader.id);
+      const isWagner = loader.canAccessStemZone;
 
       if (existing) {
         existing.setLatLng(pos);
@@ -342,8 +374,8 @@ export default function TimberYardMap() {
               <span class="loader-load">${loader.carryingLogs}/${loader.maxLoad}</span>
             </div>`,
             className: '',
-            iconSize: [44, 44],
-            iconAnchor: [22, 22],
+            iconSize: isWagner ? [52, 52] : [44, 44],
+            iconAnchor: isWagner ? [26, 26] : [22, 22],
           })
         );
         existing.setOpacity(showLoaders ? 1 : 0);
@@ -355,10 +387,10 @@ export default function TimberYardMap() {
               <span class="loader-load">${loader.carryingLogs}/${loader.maxLoad}</span>
             </div>`,
             className: '',
-            iconSize: [44, 44],
-            iconAnchor: [22, 22],
+            iconSize: isWagner ? [52, 52] : [44, 44],
+            iconAnchor: isWagner ? [26, 26] : [22, 22],
           }),
-          zIndexOffset: 1000,
+          zIndexOffset: isWagner ? 1100 : 1000,
           opacity: showLoaders ? 1 : 0,
         }).addTo(map);
         loaderMarkersRef.current.set(loader.id, marker);
@@ -642,16 +674,16 @@ export default function TimberYardMap() {
                 <span className="text-gray-300">{'Capacity > 90%'}</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-gray-500 flex-shrink-0" />
-                <span className="text-gray-300">Locked Zone</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <div className="w-4 h-0 border-t-2 border-dashed border-amber-400 flex-shrink-0" />
                 <span className="text-gray-300">Loader Path</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-base">🚜</span>
                 <span className="text-gray-300">Active Loader</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-base">🚜</span>
+                <span className="text-red-400 font-bold">Wagner (Stem Zone)</span>
               </div>
             </div>
           </div>

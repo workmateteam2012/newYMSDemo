@@ -27,6 +27,7 @@ export interface Path {
   toZoneId: string;
   direction: 'one-way';
   color?: string;
+  allowedLoaderIds?: string[]; // If set, only these loaders can use this path
 }
 
 export interface Loader {
@@ -40,6 +41,8 @@ export interface Loader {
   maxLoad: number;
   color: string;
   currentSegment: number;
+  canAccessStemZone?: boolean; // If true, this loader can use paths in stemzone
+  pathSequence?: string[]; // Array of path IDs to cycle through
 }
 
 // ============================================================
@@ -647,6 +650,86 @@ export const INITIAL_PATHS: Path[] = [
       [-38.41290, 176.54880], // Buffer East east edge
     ],
   },
+
+  // ================================================================
+  // WAGNER STEMZONE PATHS (Only Wagner can use these)
+  // Paths inside stemzone for transferring stems to production house
+  // ================================================================
+
+  // Stem Zone interior path - entry from north-west
+  {
+    id: 'path-wagner-stem-entry',
+    name: 'Wagner Entry → Stem Zone',
+    fromZoneId: 'stem-zone',
+    toZoneId: 'stem-zone',
+    direction: 'one-way',
+    color: '#dc2626',
+    points: [
+      [-38.40865, 176.54580], // Entry point from yard (north-west of stemzone)
+      [-38.40870, 176.54610], // Move into stemzone
+      [-38.40890, 176.54650], // Continue south
+      [-38.40920, 176.54680], // Middle of stemzone
+      [-38.40950, 176.54720], // Move south-east
+    ],
+    allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
+  },
+
+  // Stem Zone interior path - traverse east
+  {
+    id: 'path-wagner-stem-traverse',
+    name: 'Stem Zone Traverse',
+    fromZoneId: 'stem-zone',
+    toZoneId: 'stem-zone',
+    direction: 'one-way',
+    color: '#dc2626',
+    points: [
+      [-38.40950, 176.54720], // From entry path
+      [-38.40980, 176.54750], // Move east
+      [-38.41000, 176.54780], // Continue east
+      [-38.41030, 176.54800], // East side of stemzone
+    ],
+    allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
+  },
+
+  // Stem Zone to Production House - exit path
+  {
+    id: 'path-wagner-stem-to-production',
+    name: 'Stem Zone → Production House',
+    fromZoneId: 'stem-zone',
+    toZoneId: 'production-house',
+    direction: 'one-way',
+    color: '#dc2626',
+    points: [
+      [-38.41030, 176.54800], // East side of stemzone
+      [-38.41050, 176.54780], // Move towards production
+      [-38.41080, 176.54750], // South of stemzone
+      [-38.41100, 176.54720], // Move south-west
+      [-38.41120, 176.54680], // Approaching production house
+      [-38.41050, 176.54620], // Production house north edge
+      [-38.40980, 176.54600], // Production house north-west
+    ],
+    allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
+  },
+
+  // Production House to Stem Zone - return path (empty)
+  {
+    id: 'path-wagner-production-to-stem',
+    name: 'Production House → Stem Zone',
+    fromZoneId: 'production-house',
+    toZoneId: 'stem-zone',
+    direction: 'one-way',
+    color: '#dc2626',
+    points: [
+      [-38.40980, 176.54600], // Production house north-west
+      [-38.40950, 176.54650], // Exit production
+      [-38.40930, 176.54680], // Move north
+      [-38.40910, 176.54710], // Back into stemzone
+      [-38.40890, 176.54680], // Continue west
+      [-38.40870, 176.54630], // West in stemzone
+      [-38.40865, 176.54580], // Return to entry point
+    ],
+    allowedLoaderIds: ['wagner-1'], // Only Wagner can use this
+  },
 ];
 
 // ============================================================
@@ -655,6 +738,26 @@ export const INITIAL_PATHS: Path[] = [
 // ============================================================
 
 export const INITIAL_LOADERS: Loader[] = [
+  // Wagner - big loader for stemzone operations
+  {
+    id: 'wagner-1',
+    name: 'Wagner Big Red',
+    pathId: 'path-wagner-stem-entry',
+    progress: 0,
+    speed: 0.004, // Slower, heavier machine
+    status: 'moving',
+    carryingLogs: 15, // Big loader carries more
+    maxLoad: 20,
+    color: '#dc2626', // Red for Wagner
+    currentSegment: 0,
+    canAccessStemZone: true,
+    pathSequence: [
+      'path-wagner-stem-entry',
+      'path-wagner-stem-traverse',
+      'path-wagner-stem-to-production',
+      'path-wagner-production-to-stem',
+    ],
+  },
   {
     id: 'loader-1',
     name: 'Loader Alpha',
