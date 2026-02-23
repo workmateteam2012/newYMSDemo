@@ -34,6 +34,7 @@ A full-featured timber yard operations dashboard built on GPS coordinates using 
   - Path sequence cycling for continuous stem transfer operations
 - [x] **UPDATED: Locked zones now display as normal** - no special styling (dashed borders, gray fill)
 - [x] Removed "Locked Zone" from legend
+- [x] **FIX: Stem zone now shows capacity color** - changed icon from 🚫 to 🪵, set maxCapacity to 50, currentStock to 35
 
 ## Current Structure
 
